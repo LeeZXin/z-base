@@ -1,0 +1,9 @@
+application:
+  name: z-base
+
+http:
+  port: 8090
+  enabled: true
+
+shortLink:
+  store: mem
