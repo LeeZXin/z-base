@@ -1,7 +1,7 @@
 package util
 
 import (
-	"encoding/binary"
+	"github.com/spaolacci/murmur3"
 	"strings"
 )
 
@@ -14,7 +14,7 @@ var (
 )
 
 // To62Str 数字转化为62进制字符串
-func To62Str(i uint32) string {
+func To62Str(i uint64) string {
 	sb := strings.Builder{}
 	for i > 0 {
 		sb.WriteString(c62[i%62])
@@ -24,52 +24,12 @@ func To62Str(i uint32) string {
 }
 
 // Murmur3 hash算法
-func Murmur3(key []byte) uint32 {
-	const (
-		c1 = 0xcc9e2d51
-		c2 = 0x1b873593
-		r1 = 15
-		r2 = 13
-		m  = 5
-		n  = 0xe6546b64
-	)
-	var (
-		seed = uint32(1938)
-		h    = seed
-		k    uint32
-		l    = len(key)
-		end  = l - (l % 4)
-	)
-	for i := 0; i < end; i += 4 {
-		k = binary.LittleEndian.Uint32(key[i:])
-		k *= c1
-		k = (k << r1) | (k >> (32 - r1))
-		k *= c2
-
-		h ^= k
-		h = (h << r2) | (h >> (32 - r2))
-		h = h*m + n
+func Murmur3(key []byte) uint64 {
+	if key == nil {
+		return 0
 	}
-	k = 1
-	switch l & 3 {
-	case 3:
-		k ^= uint32(key[end+2]) << 16
-		fallthrough
-	case 2:
-		k ^= uint32(key[end+1]) << 8
-		fallthrough
-	case 1:
-		k ^= uint32(key[end])
-		k *= c1
-		k = (k << r1) | (k >> (32 - r1))
-		k *= c2
-		h ^= k
-	}
-	h ^= uint32(l)
-	h ^= h >> 16
-	h *= 0x85ebca6b
-	h ^= h >> 13
-	h *= 0xc2b2ae35
-	h ^= h >> 16
-	return h
+	h := murmur3.New128()
+	_, _ = h.Write(key)
+	a, b := h.Sum128()
+	return a ^ b
 }
