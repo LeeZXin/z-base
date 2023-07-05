@@ -1,9 +1,9 @@
-package shortlink
+package shortlink_service
 
 import (
 	"context"
 	"github.com/LeeZXin/z-base/common"
-	"github.com/LeeZXin/z-base/repo/store/shortlink"
+	"github.com/LeeZXin/z-base/repo/store/shortlink_repo"
 	"github.com/LeeZXin/z-base/repo/util"
 	"github.com/LeeZXin/zsf/logger"
 )
@@ -24,11 +24,11 @@ func (s *LinkServiceImpl) CreateShortLink(ctx context.Context, reqDTO CreateShor
 	}
 	str := s.hash(reqDTO.LongLink)
 	for i := 0; i < 10; i++ {
-		linkReqDTO := shortlink.InsertLinkReqDTO{
+		linkReqDTO := shortlink_repo.InsertLinkReqDTO{
 			ShortLink: str,
 			LongLink:  reqDTO.LongLink,
 		}
-		linkRespDTO := shortlink.StoreImpl.InsertLink(ctx, linkReqDTO)
+		linkRespDTO := shortlink_repo.StoreImpl.InsertLink(ctx, linkReqDTO)
 		logger.Logger.WithContext(ctx).Infof("CreateShortLink %s %s", reqDTO.LongLink, str)
 		if linkRespDTO.Success {
 			resp = CreateShortLinkRespDTO{
@@ -58,10 +58,10 @@ func (*LinkServiceImpl) GetLongLink(ctx context.Context, reqDTO GetLongLinkReqDT
 		}
 		return
 	}
-	linkReqDTO := shortlink.GetLongLinkByShortLinkReqDTO{
+	linkReqDTO := shortlink_repo.GetLongLinkByShortLinkReqDTO{
 		ShortLink: reqDTO.ShortLink,
 	}
-	ret := shortlink.StoreImpl.GetLongLinkByShortLink(ctx, linkReqDTO)
+	ret := shortlink_repo.StoreImpl.GetLongLinkByShortLink(ctx, linkReqDTO)
 	if ret.Exists {
 		resp = GetLongLinkRespDTO{
 			BaseResp: common.DefaultSuccessResp,

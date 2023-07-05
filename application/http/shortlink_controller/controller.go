@@ -1,8 +1,8 @@
-package shortlink
+package shortlink_controller
 
 import (
 	"github.com/LeeZXin/z-base/common"
-	"github.com/LeeZXin/z-base/service/shortlink"
+	"github.com/LeeZXin/z-base/service/shortlink_service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -17,10 +17,10 @@ func CreateShortLink(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, common.DefaultFailBindArgResp)
 		return
 	}
-	reqDTO := shortlink.CreateShortLinkReqDTO{
+	reqDTO := shortlink_service.CreateShortLinkReqDTO{
 		LongLink: reqVO.LongLink,
 	}
-	respDTO := shortlink.ServiceImpl.CreateShortLink(c.Request.Context(), reqDTO)
+	respDTO := shortlink_service.ServiceImpl.CreateShortLink(c.Request.Context(), reqDTO)
 	respVO := CreateShortLinkRespVO{
 		BaseResp:  respDTO.BaseResp,
 		ShortLink: respDTO.ShortLink,
@@ -36,10 +36,10 @@ func GetLongLinkByShortLink(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, common.DefaultFailBindArgResp)
 		return
 	}
-	reqDTO := shortlink.GetLongLinkReqDTO{
+	reqDTO := shortlink_service.GetLongLinkReqDTO{
 		ShortLink: reqVO.ShortLink,
 	}
-	respDTO := shortlink.ServiceImpl.GetLongLink(c.Request.Context(), reqDTO)
+	respDTO := shortlink_service.ServiceImpl.GetLongLink(c.Request.Context(), reqDTO)
 	respVO := GetLongLinkRespVO{
 		BaseResp: respDTO.BaseResp,
 		LongLink: respDTO.LongLink,

@@ -1,8 +1,8 @@
-package sid
+package sid_controller
 
 import (
 	"github.com/LeeZXin/z-base/common"
-	"github.com/LeeZXin/z-base/service/sid"
+	"github.com/LeeZXin/z-base/service/sid_service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -17,10 +17,10 @@ func GenerateIds(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, common.DefaultFailBindArgResp)
 		return
 	}
-	reqDTO := sid.GenerateIdsReqDTO{
+	reqDTO := sid_service.GenerateIdsReqDTO{
 		BatchNum: reqVO.BatchNum,
 	}
-	respDTO := sid.ServiceImpl.GenerateIds(reqDTO)
+	respDTO := sid_service.ServiceImpl.GenerateIds(reqDTO)
 	respVO := GenerateIdsRespVO{
 		BaseResp: respDTO.BaseResp,
 		Ids:      respDTO.Result,

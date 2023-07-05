@@ -1,4 +1,4 @@
-package sid
+package sid_controller
 
 import "github.com/LeeZXin/z-base/common"
 

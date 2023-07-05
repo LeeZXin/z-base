@@ -1,4 +1,4 @@
-package sid
+package sid_service
 
 import (
 	"context"

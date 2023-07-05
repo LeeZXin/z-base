@@ -1,4 +1,4 @@
-package shortlink
+package shortlink_service
 
 import "context"
 

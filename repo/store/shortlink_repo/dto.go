@@ -1,4 +1,4 @@
-package shortlink
+package shortlink_repo
 
 type InsertLinkReqDTO struct {
 	ShortLink string

@@ -1,4 +1,4 @@
-package shortlink
+package shortlink_controller
 
 import "github.com/LeeZXin/z-base/common"
 
