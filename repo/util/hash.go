@@ -28,8 +28,7 @@ func Murmur3(key []byte) uint64 {
 	if key == nil {
 		return 0
 	}
-	h := murmur3.New128()
-	_, _ = h.Write(key)
-	a, b := h.Sum128()
-	return a ^ b
+	h64 := murmur3.New64WithSeed(2)
+	h64.Write(key)
+	return h64.Sum64()
 }
