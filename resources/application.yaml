@@ -2,8 +2,11 @@ application:
   name: z-base
 
 http:
-  port: 8090
+  port: 8093
   enabled: true
 
 shortLink:
   store: mem
+
+saRegistry:
+  token: 5941da18-da21-d7a1-7c50-b69c10d43d0f

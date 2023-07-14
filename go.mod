@@ -3,7 +3,7 @@ module github.com/LeeZXin/z-base
 go 1.20
 
 require (
-	github.com/LeeZXin/zsf v1.0.10
+	github.com/LeeZXin/zsf v1.0.14
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-sql-driver/mysql v1.6.0

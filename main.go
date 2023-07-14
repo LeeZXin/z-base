@@ -1,14 +1,18 @@
 package main
 
 import (
-	"github.com/LeeZXin/z-base/application/http/registry_controller"
 	"github.com/LeeZXin/z-base/application/http/shortlink_controller"
 	"github.com/LeeZXin/z-base/application/http/sid_controller"
+	"github.com/LeeZXin/zsf/property"
+	"github.com/LeeZXin/zsf/quit"
+	"github.com/LeeZXin/zsf/sa_registry/server"
 	"github.com/LeeZXin/zsf/zsf"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	// 单机版注册中心
+	registryServer := server.NewRegistryServer(0, property.GetString("saRegistry.token"), nil)
 	zsf.RegisterHttpRouter(func(e *gin.Engine) {
 		sidGroup := e.Group("/sid")
 		{
@@ -22,17 +26,11 @@ func main() {
 			// 获取长链
 			shortLinkGroup.POST("/getLongLink", shortlink_controller.GetLongLinkByShortLink)
 		}
-		registryGroup := e.Group("/registry")
-		{
-			// 注册服务
-			registryGroup.POST("/registerService", registry_controller.RegisterService)
-			// 注销服务
-			registryGroup.POST("/deregisterService", registry_controller.DeregisterService)
-			// 续期
-			registryGroup.POST("/passTTL", registry_controller.PassTTL)
-			// 获取服务列表
-			registryGroup.POST("/getServiceInfoList", registry_controller.GetServiceInfoList)
-		}
+		registryServer.HttpRouter(e)
+	})
+	registryServer.Start(false)
+	quit.AddShutdownHook(func() {
+		registryServer.Stop()
 	})
 	zsf.Run()
 }
